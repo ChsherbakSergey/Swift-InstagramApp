@@ -35,3 +35,13 @@ extension UIView {
     }
     
 }
+
+extension String {
+     func safeDatabaseKey() -> String {
+        var safeKey = self.replacingOccurrences(of: ".", with: "-")
+        safeKey = safeKey.replacingOccurrences(of: "#", with: "-")
+        safeKey = safeKey.replacingOccurrences(of: "@", with: "-")
+        safeKey = safeKey.replacingOccurrences(of: "$", with: "-")
+        return safeKey
+    }
+}

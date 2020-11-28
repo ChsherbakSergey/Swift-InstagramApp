@@ -6,6 +6,7 @@
 //
 
 import SafariServices
+import FirebaseAuth
 import UIKit
 
 class LoginViewController: UIViewController {
@@ -64,7 +65,7 @@ class LoginViewController: UIViewController {
         button.layer.masksToBounds = true
         button.layer.cornerRadius = Constants.cornerRadius
         button.backgroundColor = .link
-        
+        button.titleLabel?.font = UIFont(name: "Avenir Next Demi Bold", size: 20)
         return button
     }()
     
@@ -72,7 +73,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitle("New User? Create An Account!", for: .normal)
         button.setTitleColor(.label, for: .normal)
-        
+        button.titleLabel?.font = UIFont(name: "Avenir Next", size: 16)
         return button
     }()
     
@@ -80,6 +81,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Privacy Policy", for: .normal)
         button.setTitleColor(.secondaryLabel, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Avenir Next", size: 16)
         return button
     }()
     
@@ -87,6 +89,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Terms Of Service", for: .normal)
         button.setTitleColor(.secondaryLabel, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Avenir Next", size: 16)
         return button
     }()
 
@@ -100,43 +103,45 @@ class LoginViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        //frame of scrollView
+        //frame of the scrollView
         scrollView.frame = view.bounds
-        //frame of headerview
+        //frame of the headerview
         headerView.frame = CGRect(x: 0,
                                   y: 0.0,
-                                  width: view.width,
-                                  height: view.height / 3.0)
-        //frame of Username or Email button
+                                  width: scrollView.width,
+                                  height: scrollView.height / 3.0)
+        //frame of the Username or Email button
         configureHeaderView()
-        //frame of user or email button
+        //frame of the user or email button
         usernameOrEmailTextField.frame = CGRect(x: 25,
                                   y: headerView.bottom + 30,
-                                  width: view.width - 50,
+                                  width: scrollView.width - 50,
                                   height: Constants.textFieldHeight)
-        //frame of password button
+        //frame of the password button
         passwordTextField.frame = CGRect(x: 25,
                                   y: usernameOrEmailTextField.bottom + 10,
-                                  width: view.width - 50,
+                                  width: scrollView.width - 50,
                                   height: Constants.textFieldHeight)
-        //frame of log in button
+        //frame of the log in button
         loginButton.frame = CGRect(x: 25,
                                   y: passwordTextField.bottom + 10,
-                                  width: view.width - 50,
+                                  width: scrollView.width - 50,
                                   height: Constants.textFieldHeight)
-        //frame of create an account button
+        //frame of the create an account button
         createNewAccountButton.frame = CGRect(x: 25,
                                   y: loginButton.bottom + 10,
-                                  width: view.width - 50,
+                                  width: scrollView.width - 50,
                                   height: Constants.textFieldHeight)
-        //frame of terms button
+        //frame of the terms button
         termsButton.frame = CGRect(x: 10,
-                                   y: view.height - view.safeAreaInsets.bottom - 100,
-                                   width: view.width - 20,
+                                   y: scrollView.height -
+                                    scrollView.safeAreaInsets.bottom - 100,
+                                   width: scrollView.width - 20,
                                    height: 50)
+        //frame of the privacy policy button
         privacyButton.frame = CGRect(x: 10,
-                                   y: view.height - view.safeAreaInsets.bottom - 50,
-                                   width: view.width - 20,
+                                   y: scrollView.height - scrollView.safeAreaInsets.bottom - 50,
+                                   width: scrollView.width - 20,
                                    height: 50)
     }
     
@@ -196,18 +201,52 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapLoginButton() {
+        //Resign responders of the textfields
         passwordTextField.resignFirstResponder()
         usernameOrEmailTextField.resignFirstResponder()
-        guard let usernameOrEmail = usernameOrEmailTextField.text, !usernameOrEmail.isEmpty,
-              let password = passwordTextField.text, !password.isEmpty, password.count >= 8 else {
-            return
+        //check if the information provided by a user is correspond to the information we need to log an user in. And if it conforms - we log and user in, otherwise we show them an alerts that correspond to why we cannot log an user in.
+        if let usernameOrEmail = usernameOrEmailTextField.text, !usernameOrEmail.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty, password.count >= 8 {
+            //Firebase Log in
+            var username: String?
+            var email: String?
+            //First check if the user tries to log in with email or username
+            if usernameOrEmail.contains("@"), usernameOrEmail.contains(".") {
+                //Tries to log In with email
+                email = usernameOrEmail
+            } else {
+                //Tries to log in with username
+                username = usernameOrEmail
+            }
+            //Actually log in a user
+            AuthManager.shared.loginUser(username: username, email: email, password: password, completion: { [weak self] success in
+                //guard a weak self
+                guard let strongSelf = self else {
+                    return
+                }
+                if success {
+                    //User is logged in
+                    self?.dismiss(animated: true, completion: nil)
+                } else {
+                    //An error while tried to log in occured
+                    Alerts.loginAlert(on: strongSelf)
+                }
+            })
         }
-        //Firebase Log in
+        //Add an Alert if an user did not enter all the information or if an user did not passed a valid password or if an user was unable to log in with 3 attempts show the forgot password alert;
+        else if let emptyUserName = usernameOrEmailTextField.text, let emptyPassword = passwordTextField.text, emptyUserName.isEmpty || emptyPassword.isEmpty  {
+            Alerts.loginAlertEmptyFields(on: self)
+        } else if let notEnoughtCharactersInPassword = passwordTextField.text, notEnoughtCharactersInPassword.count < 8 {
+            Alerts.loginAlertNotEnoughCharactersInPassword(on: self)
+        }
+        
     }
     
     @objc private func didTapCreateNewAccountButton() {
         let vc = RegistrationViewController()
-        present(vc, animated: true)
+        vc.title = "Create An Account"
+        let nav = UINavigationController(rootViewController: vc)
+        present(nav, animated: true)
     }
     
     @objc private func didTapPrivacyButton() {
@@ -216,7 +255,6 @@ class LoginViewController: UIViewController {
     
     @objc private func didTapTermButton() {
         presentSafariVC(with: "https://www.instagram.com/about/legal/terms/before-january-19-2013/")
-        
     }
     
     private func presentSafariVC(with url: String) {

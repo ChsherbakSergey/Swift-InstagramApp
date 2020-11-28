@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5516D59257248CA00EA31D7 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5516D58257248CA00EA31D7 /* Alerts.swift */; };
 		A56C17522571369C00AE524C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C17512571369C00AE524C /* AppDelegate.swift */; };
 		A56C17542571369C00AE524C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C17532571369C00AE524C /* SceneDelegate.swift */; };
 		A56C17562571369C00AE524C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C17552571369C00AE524C /* HomeViewController.swift */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		2A4BFC7DDEA58C2FF2DD0FF9 /* Pods-InstagramApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramApp.release.xcconfig"; path = "Target Support Files/Pods-InstagramApp/Pods-InstagramApp.release.xcconfig"; sourceTree = "<group>"; };
 		921E5A7539B3A613B65A053E /* Pods_InstagramApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5516D58257248CA00EA31D7 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		A56C174E2571369C00AE524C /* InstagramApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56C17512571369C00AE524C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A56C17532571369C00AE524C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				A56C17B82571635200AE524C /* StorageManager.swift */,
 				A56C17E92571931400AE524C /* Extensions.swift */,
 				A56C17EC2571961000AE524C /* Constants.swift */,
+				A5516D58257248CA00EA31D7 /* Alerts.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A56C1786257139CD00AE524C /* EditProfileViewController.swift in Sources */,
+				A5516D59257248CA00EA31D7 /* Alerts.swift in Sources */,
 				A56C17ED2571961000AE524C /* Constants.swift in Sources */,
 				A56C176D2571382F00AE524C /* ExploreViewController.swift in Sources */,
 				A56C179825713AD400AE524C /* PublishPostViewController.swift in Sources */,
@@ -502,7 +506,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GUF6JQVK4V;
 				INFOPLIST_FILE = InstagramApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -523,7 +527,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GUF6JQVK4V;
 				INFOPLIST_FILE = InstagramApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
