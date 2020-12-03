@@ -10,6 +10,7 @@ import SafariServices
 
 class RegistrationViewController: UIViewController {
     
+    //Views that will be use on this controller
     private let scrollView : UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -93,6 +94,7 @@ class RegistrationViewController: UIViewController {
         return button
     }()
 
+    ///Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setInitialUI()
@@ -137,6 +139,7 @@ class RegistrationViewController: UIViewController {
                                    height: 50)
     }
     
+    ///Sets Initial UI
     private func setInitialUI() {
         //Assign background of the main view
         view.backgroundColor = .systemBackground
@@ -151,12 +154,14 @@ class RegistrationViewController: UIViewController {
         scrollView.addSubview(termsButton)
     }
     
+    ///Sets delegates
     private func assignDelegates() {
         usernameTextField.delegate = self
         emailTextField.delegate = self
         passwordTextField.delegate = self
     }
     
+    ///Dismiss keyboard when the user taps outside of it
     private func dismissTextFieldsWhenTapOutsideOfIt() {
         //adding gesture to scrollview to be able to dismiss keyboard when tap outside of the textfield
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapOutsideOfTextfields))
@@ -164,10 +169,12 @@ class RegistrationViewController: UIViewController {
         scrollView.addGestureRecognizer(gesture)
     }
     
+    ///Dismiss keyabord
     @objc private func didTapOutsideOfTextfields() {
         scrollView.endEditing(true)
     }
     
+    ///Sets Targets to buttons on the screen
     private func setTargetsToButtons() {
         //Adding targets to the buttons
         registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
@@ -175,6 +182,7 @@ class RegistrationViewController: UIViewController {
         termsButton.addTarget(self, action: #selector(didTapTermsButton), for: .touchUpInside)
     }
     
+    ///Register the user
     @objc private func didTapRegisterButton() {
         //Firstly resign all the textfields respinders
         usernameTextField.resignFirstResponder()
@@ -185,10 +193,11 @@ class RegistrationViewController: UIViewController {
            let email = emailTextField.text, !email.isEmpty,
            let password = passwordTextField.text, !password.isEmpty, password.count >= 8 {
             //Firebase register
-            AuthManager.shared.registerNewUser(username: username, email: email, password: password, completion: { registered in
+            AuthManager.shared.registerNewUser(username: username, email: email, password: password, completion: { [weak self] registered in
                 DispatchQueue.main.async {
                     if registered {
                         //dismiss controller and show the app to the user
+                        self?.dismiss(animated: true, completion: nil)
                     }
                     else {
                         //Unable to register a new user. Show the alert that says why
@@ -207,14 +216,17 @@ class RegistrationViewController: UIViewController {
         }
     }
     
+    ///Shows Privacy Policy of the app
     @objc private func didTapPrivacyPolicyButton() {
         presentSafariVC(with: "https://help.instagram.com/519522125107875")
     }
     
+    ///Shows Terms Of Use of the app
     @objc private func didTapTermsButton() {
         presentSafariVC(with: "https://www.instagram.com/about/legal/terms/before-january-19-2013/")
     }
     
+    ///Presents Safari VC with a provided url
     private func presentSafariVC(with url: String) {
         guard let url = URL(string: url) else {
             return
@@ -224,6 +236,8 @@ class RegistrationViewController: UIViewController {
     }
     
 }
+
+//MARK: - TextField Delegate Realization
 
 extension RegistrationViewController: UITextFieldDelegate {
     

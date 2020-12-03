@@ -11,6 +11,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    //Views that will be used on this controller
     private let scrollView : UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -93,6 +94,7 @@ class LoginViewController: UIViewController {
         return button
     }()
 
+    //Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setInititalUI()
@@ -145,6 +147,7 @@ class LoginViewController: UIViewController {
                                    height: 50)
     }
     
+    ///Sets Initial UI
     private func setInititalUI() {
         //Assign background color to the main view
         view.backgroundColor = .systemBackground
@@ -162,6 +165,7 @@ class LoginViewController: UIViewController {
         configureHeaderView()
     }
     
+    ///Sets header view of the view
     private func configureHeaderView() {
         guard let backgroundView = headerView.subviews.first else {
             return
@@ -178,11 +182,13 @@ class LoginViewController: UIViewController {
                                  height: headerView.height - view.safeAreaInsets.top)
     }
     
+    ///Sets delegates
     private func assignDelegates() {
         usernameOrEmailTextField.delegate = self
         passwordTextField.delegate = self
     }
     
+    ///Sets targets to the buttons on the screen
     private func setTargetsToButtons() {
         loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         createNewAccountButton.addTarget(self, action: #selector(didTapCreateNewAccountButton), for: .touchUpInside)
@@ -190,16 +196,19 @@ class LoginViewController: UIViewController {
         termsButton.addTarget(self, action: #selector(didTapTermButton), for: .touchUpInside)
     }
     
+    ///Disniss keyboard when user taps outside of the textfield
     private func dismissTextFieldWhenTapOutsideOfIt() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapOutsideTextField))
         gesture.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(gesture)
     }
     
+    ///Dismiss keyabord
     @objc private func didTapOutsideTextField() {
         scrollView.endEditing(true)
     }
     
+    ///Login In an user
     @objc private func didTapLoginButton() {
         //Resign responders of the textfields
         passwordTextField.resignFirstResponder()
@@ -242,6 +251,7 @@ class LoginViewController: UIViewController {
         
     }
     
+    ///Shows the Registration Controller if the user wants to create a new account
     @objc private func didTapCreateNewAccountButton() {
         let vc = RegistrationViewController()
         vc.title = "Create An Account"
@@ -249,14 +259,17 @@ class LoginViewController: UIViewController {
         present(nav, animated: true)
     }
     
+    ///Shows privacy policy of the app
     @objc private func didTapPrivacyButton() {
         presentSafariVC(with: "https://help.instagram.com/519522125107875")
     }
     
+    ///Shows terms of use of the app
     @objc private func didTapTermButton() {
         presentSafariVC(with: "https://www.instagram.com/about/legal/terms/before-january-19-2013/")
     }
     
+    ///Presents Safari VC to be able to see anything with a provided url
     private func presentSafariVC(with url: String) {
         guard let url = URL(string: url) else {
             return
@@ -266,6 +279,8 @@ class LoginViewController: UIViewController {
     }
 
 }
+
+//MARK: - TextField Delegate Realization
 
 extension LoginViewController: UITextFieldDelegate {
     

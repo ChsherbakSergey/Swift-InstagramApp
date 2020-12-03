@@ -18,4 +18,8 @@ target 'InstagramApp' do
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Storage'
 
+#Images
+
+  pod 'SDWebImage'
+
 end
